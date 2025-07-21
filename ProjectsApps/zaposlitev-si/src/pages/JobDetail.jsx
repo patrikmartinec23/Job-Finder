@@ -138,26 +138,36 @@ const JobDetail = () => {
                             Back to Jobs
                         </button>
                         {isOwner && (
-                            <button
-                                className="btn btn-outline-danger"
-                                onClick={handleDeleteJob}
-                                disabled={deleteLoading}
-                            >
-                                {deleteLoading ? (
-                                    <>
-                                        <span
-                                            className="spinner-border spinner-border-sm me-2"
-                                            role="status"
-                                        ></span>
-                                        Deleting...
-                                    </>
-                                ) : (
-                                    <>
-                                        <i className="fas fa-trash me-2"></i>
-                                        Delete Job
-                                    </>
-                                )}
-                            </button>
+                            <div className="d-flex gap-2">
+                                <button
+                                    className="btn btn-outline-warning"
+                                    onClick={() => navigate(`/edit-job/${id}`)}
+                                    disabled={deleteLoading}
+                                >
+                                    <i className="fas fa-edit me-2"></i>
+                                    Edit Job
+                                </button>
+                                <button
+                                    className="btn btn-outline-danger"
+                                    onClick={handleDeleteJob}
+                                    disabled={deleteLoading}
+                                >
+                                    {deleteLoading ? (
+                                        <>
+                                            <span
+                                                className="spinner-border spinner-border-sm me-2"
+                                                role="status"
+                                            ></span>
+                                            Deleting...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <i className="fas fa-trash me-2"></i>
+                                            Delete Job
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         )}
                     </div>
                 </div>
@@ -210,31 +220,47 @@ const JobDetail = () => {
                                 </div>
                                 <div className="col-12 col-md-4 text-md-end">
                                     <div className="d-flex flex-column gap-2">
-                                        <button className="btn btn-success btn-lg">
-                                            <i className="fas fa-paper-plane me-2"></i>
-                                            Apply Now
-                                        </button>
-                                        {isOwner && (
-                                            <button
-                                                className="btn btn-danger"
-                                                onClick={handleDeleteJob}
-                                                disabled={deleteLoading}
-                                            >
-                                                {deleteLoading ? (
-                                                    <>
-                                                        <span
-                                                            className="spinner-border spinner-border-sm me-2"
-                                                            role="status"
-                                                        ></span>
-                                                        Deleting...
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <i className="fas fa-trash me-2"></i>
-                                                        Delete Job
-                                                    </>
-                                                )}
+                                        {!isOwner && (
+                                            <button className="btn btn-success btn-lg">
+                                                <i className="fas fa-paper-plane me-2"></i>
+                                                Apply Now
                                             </button>
+                                        )}
+                                        {isOwner && (
+                                            <>
+                                                <button
+                                                    className="btn btn-warning btn-lg"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/edit-job/${id}`
+                                                        )
+                                                    }
+                                                    disabled={deleteLoading}
+                                                >
+                                                    <i className="fas fa-edit me-2"></i>
+                                                    Edit Job
+                                                </button>
+                                                <button
+                                                    className="btn btn-danger"
+                                                    onClick={handleDeleteJob}
+                                                    disabled={deleteLoading}
+                                                >
+                                                    {deleteLoading ? (
+                                                        <>
+                                                            <span
+                                                                className="spinner-border spinner-border-sm me-2"
+                                                                role="status"
+                                                            ></span>
+                                                            Deleting...
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <i className="fas fa-trash me-2"></i>
+                                                            Delete Job
+                                                        </>
+                                                    )}
+                                                </button>
+                                            </>
                                         )}
                                     </div>
                                 </div>
