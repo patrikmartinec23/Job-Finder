@@ -1,3 +1,4 @@
+/* Custom styles for JobFinder */
 :root {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.5;
@@ -8,6 +9,7 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
 
+    /* Light theme variables */
     --bg-color: #ffffff;
     --bg-secondary: #f8f9fa;
     --text-color: #212529;
@@ -23,6 +25,7 @@
     --shadow-hover: rgba(0, 0, 0, 0.15);
 }
 
+/* Dark theme variables */
 [data-theme='dark'] {
     color-scheme: dark;
     --bg-color: #121212;
@@ -40,6 +43,7 @@
     --shadow-hover: rgba(0, 0, 0, 0.5);
 }
 
+/* Body styles */
 body {
     margin: 0;
     background-color: var(--bg-secondary);
@@ -48,6 +52,7 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Custom utility classes */
 .shadow-hover {
     transition: box-shadow 0.15s ease-in-out;
 }
@@ -56,6 +61,7 @@ body {
     box-shadow: 0 0.5rem 1rem var(--shadow-hover) !important;
 }
 
+/* Job description formatting */
 .job-description p,
 .requirements p,
 .benefits p {
@@ -101,6 +107,7 @@ body {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
+/* Theme toggle button */
 .theme-toggle {
     background: none;
     border: 1px solid var(--border-color);
@@ -133,6 +140,7 @@ body {
     color: #ffffff;
 }
 
+/* Card hover effects */
 .card {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -146,10 +154,12 @@ body {
     box-shadow: 0 0.5rem 1rem var(--shadow-hover) !important;
 }
 
+/* Button improvements */
 .btn {
     transition: all 0.2s ease-in-out;
 }
 
+/* Form improvements */
 .form-control {
     background-color: var(--card-bg);
     border-color: var(--border-color);

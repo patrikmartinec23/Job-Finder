@@ -68,7 +68,6 @@ body {
     margin-bottom: 0;
 }
 
-/* Navigation improvements */
 .navbar {
     background-color: var(--navbar-bg) !important;
     border-bottom: 1px solid var(--border-color);
@@ -121,7 +120,6 @@ body {
     color: #0d6efd;
 }
 
-/* Theme toggle in navbar */
 .navbar .theme-toggle {
     border-color: rgba(255, 255, 255, 0.3);
     color: rgba(255, 255, 255, 0.8);
@@ -180,12 +178,10 @@ body {
     box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
 }
 
-/* Badge styles */
 .badge {
     font-size: 0.75em;
 }
 
-/* Loading spinner container */
 .spinner-container {
     min-height: 200px;
     display: flex;
@@ -193,18 +189,15 @@ body {
     justify-content: center;
 }
 
-/* Responsive text sizes */
 @media (max-width: 768px) {
     .display-4 {
         font-size: 2.5rem;
     }
-
     .lead {
         font-size: 1.1rem;
     }
 }
 
-/* Print styles */
 @media print {
     .navbar,
     .btn,
@@ -213,7 +206,6 @@ body {
     }
 }
 
-/* Accessibility improvements */
 .visually-hidden {
     position: absolute !important;
     width: 1px !important;
@@ -226,7 +218,6 @@ body {
     border: 0 !important;
 }
 
-/* Focus indicators */
 a:focus,
 button:focus,
 input:focus,
@@ -236,7 +227,6 @@ textarea:focus {
     outline-offset: 2px;
 }
 
-/* Job card specific styles */
 .job-card .card-title {
     font-size: 1.1rem;
     font-weight: 600;
@@ -246,7 +236,6 @@ textarea:focus {
     font-size: 0.9rem;
 }
 
-/* Filter section styles */
 .filter-section {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -255,7 +244,6 @@ textarea:focus {
     margin-bottom: 2rem;
 }
 
-/* Animation classes for future use */
 .fade-in {
     animation: fadeIn 0.5s ease-in;
 }
@@ -271,7 +259,6 @@ textarea:focus {
     }
 }
 
-/* Error and success message improvements */
 .alert {
     background-color: var(--alert-bg);
     border-color: var(--alert-border);
@@ -304,7 +291,6 @@ textarea:focus {
     color: #d1f2eb;
 }
 
-/* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -322,7 +308,6 @@ textarea:focus {
     background: var(--text-muted);
 }
 
-/* Additional dark mode support */
 .dropdown-menu {
     background-color: var(--card-bg);
     border-color: var(--border-color);
@@ -372,12 +357,10 @@ textarea:focus {
     border-color: #0d6efd;
 }
 
-/* Text colors */
 .text-muted {
     color: var(--text-muted) !important;
 }
 
-/* Border utilities */
 .border {
     border-color: var(--border-color) !important;
 }

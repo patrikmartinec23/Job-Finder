@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ThemeToggle from './ThemeToggle';
 
 const Navigation = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -75,6 +76,10 @@ const Navigation = () => {
                     </ul>
 
                     <ul className="navbar-nav">
+                        <li className="nav-item">
+                            <ThemeToggle className="nav-link border-0 bg-transparent" />
+                        </li>
+
                         {currentUser ? (
                             <li className="nav-item dropdown">
                                 <a

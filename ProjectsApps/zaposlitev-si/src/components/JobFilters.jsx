@@ -15,7 +15,7 @@ const JobFilters = () => {
 
     return (
         <div className="card shadow-sm mb-4">
-            <div className="card-header bg-light">
+            <div className="card-header bg-warning">
                 <h5 className="card-title mb-0">
                     <i className="fas fa-filter me-2"></i>
                     Filter Jobs
@@ -24,7 +24,6 @@ const JobFilters = () => {
             <div className="card-body">
                 <form>
                     <div className="row g-3">
-                        {/* Search Input */}
                         <div className="col-12 col-md-6">
                             <label htmlFor="search" className="form-label">
                                 <i className="fas fa-search me-1"></i>
@@ -41,7 +40,6 @@ const JobFilters = () => {
                             />
                         </div>
 
-                        {/* Location Filter */}
                         <div className="col-12 col-md-6">
                             <label htmlFor="location" className="form-label">
                                 <i className="fas fa-map-marker-alt me-1"></i>
@@ -58,7 +56,6 @@ const JobFilters = () => {
                             />
                         </div>
 
-                        {/* Job Type Filter */}
                         <div className="col-12 col-md-6">
                             <label htmlFor="jobType" className="form-label">
                                 <i className="fas fa-briefcase me-1"></i>
@@ -80,7 +77,6 @@ const JobFilters = () => {
                             </select>
                         </div>
 
-                        {/* Salary Range Filter */}
                         <div className="col-12 col-md-6">
                             <label htmlFor="salaryRange" className="form-label">
                                 <i className="fas fa-dollar-sign me-1"></i>
@@ -105,7 +101,6 @@ const JobFilters = () => {
                             </select>
                         </div>
 
-                        {/* Clear Filters Button */}
                         <div className="col-12">
                             <button
                                 type="button"
