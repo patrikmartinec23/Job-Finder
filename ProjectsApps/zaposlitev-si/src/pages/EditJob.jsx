@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useJobs } from '../context/JobContext';
 import { useAuth } from '../context/AuthContext';
+import { convertToUSD } from '../utils/helpers';
 import LoadingSpinner from '../components/LoadingSpinner';
+import CurrencyRatesInfo from '../components/CurrencyRatesInfo';
 
 const EditJob = () => {
     const { id } = useParams();
@@ -20,6 +22,7 @@ const EditJob = () => {
         location: '',
         jobtype: 'full-time',
         salary: '',
+        currency: 'USD',
         description: '',
         requirements: '',
     });
@@ -43,7 +46,8 @@ const EditJob = () => {
                     company: jobData.company || '',
                     location: jobData.location || '',
                     jobtype: jobData.jobtype || 'full-time',
-                    salary: jobData.salary || '',
+                    salary: jobData.originalSalary || jobData.salary || '',
+                    currency: jobData.originalCurrency || 'USD',
                     description: jobData.description || '',
                     requirements: jobData.requirements || '',
                 });
@@ -93,10 +97,18 @@ const EditJob = () => {
         setError(null);
 
         try {
-            // Convert salary to number if provided
+            // Convert salary to USD for consistent storage and filtering
+            const salaryInUSD = formData.salary
+                ? await convertToUSD(Number(formData.salary), formData.currency)
+                : null;
+
             const updateData = {
                 ...formData,
-                salary: formData.salary ? Number(formData.salary) : null,
+                salary: salaryInUSD,
+                originalSalary: formData.salary
+                    ? Number(formData.salary)
+                    : null,
+                originalCurrency: formData.currency,
             };
 
             await updateJob(id, updateData);
@@ -284,16 +296,44 @@ const EditJob = () => {
                                         >
                                             Salary (Annual)
                                         </label>
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            id="salary"
-                                            name="salary"
-                                            value={formData.salary}
-                                            onChange={handleInputChange}
-                                            placeholder="e.g. 80000"
-                                            min="0"
-                                        />
+                                        <div className="input-group">
+                                            <select
+                                                className="form-select"
+                                                name="currency"
+                                                value={formData.currency}
+                                                onChange={handleInputChange}
+                                                style={{ maxWidth: '120px' }}
+                                            >
+                                                <option value="USD">
+                                                    USD ($)
+                                                </option>
+                                                <option value="EUR">
+                                                    EUR (€)
+                                                </option>
+                                                <option value="GBP">
+                                                    GBP (£)
+                                                </option>
+                                            </select>
+                                            <input
+                                                type="number"
+                                                className="form-control"
+                                                id="salary"
+                                                name="salary"
+                                                value={formData.salary}
+                                                onChange={handleInputChange}
+                                                placeholder="e.g. 80000"
+                                                min="0"
+                                            />
+                                        </div>
+                                        <div className="form-text">
+                                            <small className="text-muted">
+                                                <i className="fas fa-info-circle me-1"></i>
+                                                Salary will be displayed in USD
+                                                on job listings using current
+                                                exchange rates
+                                            </small>
+                                        </div>
+                                        <CurrencyRatesInfo className="mt-2" />
                                     </div>
 
                                     {/* Description */}

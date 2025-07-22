@@ -1,5 +1,160 @@
 // Utility functions for the JobFinder application
 
+// Cache for exchange rates to avoid too many API calls
+let exchangeRatesCache = {
+    rates: null,
+    timestamp: null,
+    expiry: 1000 * 60 * 60, // 1 hour cache
+};
+
+/**
+ * Fetch current exchange rates from API
+ * @returns {Promise<Object>} Exchange rates object
+ */
+export const fetchExchangeRates = async () => {
+    try {
+        // Check if we have valid cached rates
+        if (
+            exchangeRatesCache.rates &&
+            exchangeRatesCache.timestamp &&
+            Date.now() - exchangeRatesCache.timestamp <
+                exchangeRatesCache.expiry
+        ) {
+            return exchangeRatesCache.rates;
+        }
+
+        // Fetch fresh rates from API
+        const response = await fetch(
+            'https://api.exchangerate-api.com/v4/latest/USD'
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch exchange rates');
+        }
+
+        const data = await response.json();
+
+        // Cache the results
+        exchangeRatesCache = {
+            rates: data.rates,
+            timestamp: Date.now(),
+            expiry: 1000 * 60 * 60, // 1 hour
+        };
+
+        return data.rates;
+    } catch (error) {
+        console.warn(
+            'Failed to fetch exchange rates, using fallback rates:',
+            error
+        );
+        // Fallback to hardcoded rates if API fails
+        return {
+            USD: 1.0,
+            EUR: 0.85, // Approximate fallback rates
+            GBP: 0.73,
+        };
+    }
+};
+
+/**
+ * Convert currency to USD for consistent storage
+ * @param {number} amount - The amount to convert
+ * @param {string} fromCurrency - The currency to convert from
+ * @returns {Promise<number>} Amount in USD
+ */
+export const convertToUSD = async (amount, fromCurrency) => {
+    if (!amount || fromCurrency === 'USD') return amount;
+
+    try {
+        const rates = await fetchExchangeRates();
+
+        // Convert from the source currency to USD
+        // Since our API gives rates FROM USD, we need to divide by the rate to convert TO USD
+        const usdAmount =
+            fromCurrency === 'USD' ? amount : amount / rates[fromCurrency];
+
+        return Math.round(usdAmount);
+    } catch (error) {
+        console.error('Currency conversion failed:', error);
+        // Fallback conversion rates
+        const fallbackRates = {
+            EUR: 1.08,
+            GBP: 1.26,
+            USD: 1.0,
+        };
+        return Math.round(amount * (fallbackRates[fromCurrency] || 1));
+    }
+};
+
+/**
+ * Convert from USD to another currency
+ * @param {number} usdAmount - The USD amount to convert
+ * @param {string} toCurrency - The target currency
+ * @returns {Promise<number>} Amount in target currency
+ */
+export const convertFromUSD = async (usdAmount, toCurrency) => {
+    if (!usdAmount || toCurrency === 'USD') return usdAmount;
+
+    try {
+        const rates = await fetchExchangeRates();
+
+        // Convert from USD to target currency
+        const convertedAmount = usdAmount * rates[toCurrency];
+
+        return Math.round(convertedAmount);
+    } catch (error) {
+        console.error('Currency conversion failed:', error);
+        // Fallback conversion rates (FROM USD)
+        const fallbackRates = {
+            EUR: 0.85,
+            GBP: 0.73,
+            USD: 1.0,
+        };
+        return Math.round(usdAmount * (fallbackRates[toCurrency] || 1));
+    }
+};
+
+/**
+ * Get formatted exchange rates for display
+ * @returns {Promise<Object>} Formatted exchange rates
+ */
+export const getFormattedExchangeRates = async () => {
+    try {
+        const rates = await fetchExchangeRates();
+
+        return {
+            'USD to EUR': `1 USD = ${rates.EUR?.toFixed(4)} EUR`,
+            'USD to GBP': `1 USD = ${rates.GBP?.toFixed(4)} GBP`,
+            'EUR to USD': `1 EUR = ${(1 / rates.EUR)?.toFixed(4)} USD`,
+            'GBP to USD': `1 GBP = ${(1 / rates.GBP)?.toFixed(4)} USD`,
+            lastUpdated: new Date().toLocaleString(),
+        };
+    } catch (error) {
+        console.error('Failed to get exchange rates:', error);
+        return {
+            'USD to EUR': '1 USD = 0.8500 EUR (approx)',
+            'USD to GBP': '1 USD = 0.7300 GBP (approx)',
+            'EUR to USD': '1 EUR = 1.0800 USD (approx)',
+            'GBP to USD': '1 GBP = 1.2600 USD (approx)',
+            lastUpdated: 'Rates unavailable',
+        };
+    }
+};
+
+/**
+ * Get currency symbol
+ * @param {string} currency - The currency code
+ * @returns {string} Currency symbol
+ */
+export const getCurrencySymbol = (currency) => {
+    const symbols = {
+        USD: '$',
+        EUR: '€',
+        GBP: '£',
+    };
+    return symbols[currency] || '$';
+};
+
 /**
  * Format currency values
  * @param {number} amount - The amount to format
