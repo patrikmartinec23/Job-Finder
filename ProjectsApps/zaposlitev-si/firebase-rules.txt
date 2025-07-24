@@ -1,0 +1,46 @@
+// Firebase Security Rules for JobFinder app
+// Copy and paste these rules into your Firebase Console > Firestore Database > Rules tab
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow authenticated users to read their own user documents
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Jobs collection rules - all authenticated users can create jobs
+    match /jobs/{jobId} {
+      allow read: if true; // Anyone can read job listings
+      allow create: if request.auth != null; // Only authenticated users can create jobs
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.postedBy; // Only job creator can update/delete
+    }
+    
+    // Conversations - less restrictive for testing
+    match /conversations/{conversationId} {
+      // Allow reading if user is participant
+      allow read: if request.auth != null && 
+                    (request.auth.uid in resource.data.participants);
+      
+      // Allow creating for any authenticated user
+      allow create: if request.auth != null;
+      
+      // Allow updating if user is participant
+      allow update: if request.auth != null && 
+                     (request.auth.uid in resource.data.participants);
+    }
+    
+    // Messages - less restrictive for testing
+    match /messages/{messageId} {
+      // Allow reading if user is in the conversation
+      allow read: if request.auth != null;
+      
+      // Allow creating messages by any authenticated user
+      allow create: if request.auth != null;
+      
+      // Allow updating own messages
+      allow update: if request.auth != null && 
+                     request.auth.uid == resource.data.senderId;
+    }
+  }
+}

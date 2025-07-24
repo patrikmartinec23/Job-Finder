@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useMessages } from '../context/MessageContext';
 import ThemeToggle from './ThemeToggle';
 
 const Navigation = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { currentUser, logout } = useAuth();
+    const { unreadCount } = useMessages();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -73,6 +75,28 @@ const Navigation = () => {
                                 About
                             </Link>
                         </li>
+                        {currentUser && (
+                            <li className="nav-item">
+                                <Link
+                                    className="nav-link position-relative"
+                                    to="/messages"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    <i className="fas fa-comments me-1"></i>
+                                    Messages
+                                    {unreadCount > 0 && (
+                                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            {unreadCount > 99
+                                                ? '99+'
+                                                : unreadCount}
+                                            <span className="visually-hidden">
+                                                unread messages
+                                            </span>
+                                        </span>
+                                    )}
+                                </Link>
+                            </li>
+                        )}
                     </ul>
 
                     <ul className="navbar-nav">

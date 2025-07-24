@@ -397,3 +397,28 @@ textarea:focus {
 .border-end {
     border-right-color: var(--border-color) !important;
 }
+
+/* Currency rates info styling */
+.currency-rates-info {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+[data-theme='dark'] .currency-rates-info {
+    background: linear-gradient(
+        135deg,
+        var(--card-bg) 0%,
+        var(--bg-secondary) 100%
+    );
+    border-color: var(--border-color);
+}
+
+.currency-rates-info:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .currency-rates-info:hover {
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+}

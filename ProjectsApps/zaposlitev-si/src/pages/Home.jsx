@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useJobs } from '../context/JobContext';
 import JobCard from '../components/JobCard';
 import JobFilters from '../components/JobFilters';

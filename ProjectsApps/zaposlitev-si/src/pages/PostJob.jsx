@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useJobs } from '../context/JobContext';
 import { useAuth } from '../context/AuthContext';
 import { convertToUSD } from '../utils/helpers';
-import CurrencyRatesInfo from '../components/CurrencyRatesInfo';
 
 const PostJob = () => {
     const navigate = useNavigate();
@@ -301,7 +300,6 @@ const PostJob = () => {
                                                 exchange rates
                                             </small>
                                         </div>
-                                        <CurrencyRatesInfo className="mt-2" />
                                     </div>
 
                                     {/* Description */}

@@ -4,7 +4,6 @@ import { useJobs } from '../context/JobContext';
 import { useAuth } from '../context/AuthContext';
 import { convertToUSD } from '../utils/helpers';
 import LoadingSpinner from '../components/LoadingSpinner';
-import CurrencyRatesInfo from '../components/CurrencyRatesInfo';
 
 const EditJob = () => {
     const { id } = useParams();
@@ -333,7 +332,6 @@ const EditJob = () => {
                                                 exchange rates
                                             </small>
                                         </div>
-                                        <CurrencyRatesInfo className="mt-2" />
                                     </div>
 
                                     {/* Description */}

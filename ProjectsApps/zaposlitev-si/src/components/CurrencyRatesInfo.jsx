@@ -47,27 +47,58 @@ const CurrencyRatesInfo = ({ className = '' }) => {
     }
 
     return (
-        <div className={`${className}`}>
-            <small className="text-muted">
-                <strong>Current Exchange Rates:</strong>
-                <br />
-                {rates &&
-                    Object.entries(rates).map(([key, value]) => {
-                        if (key === 'lastUpdated') {
-                            return (
-                                <span key={key} className="d-block mt-1">
-                                    <i className="fas fa-clock me-1"></i>
-                                    Last updated: {value}
-                                </span>
-                            );
-                        }
-                        return (
-                            <span key={key} className="d-block">
-                                {value}
-                            </span>
-                        );
-                    })}
-            </small>
+        <div className={`currency-rates-info ${className}`}>
+            <div className="p-3">
+                <div className="d-flex align-items-center mb-2">
+                    <i className="fas fa-exchange-alt me-2 text-primary"></i>
+                    <strong className="small">Live Exchange Rates</strong>
+                </div>
+                <div className="row small text-muted">
+                    <div className="col-6">
+                        {rates &&
+                            Object.entries(rates).map(([key, value]) => {
+                                if (
+                                    key === 'lastUpdated' ||
+                                    key.includes('to USD')
+                                ) {
+                                    return null;
+                                }
+                                return (
+                                    <div key={key} className="mb-1">
+                                        {value}
+                                    </div>
+                                );
+                            })}
+                    </div>
+                    <div className="col-6">
+                        {rates &&
+                            Object.entries(rates).map(([key, value]) => {
+                                if (
+                                    key === 'lastUpdated' ||
+                                    key.includes('USD to')
+                                ) {
+                                    return null;
+                                }
+                                if (key.includes('to USD')) {
+                                    return (
+                                        <div key={key} className="mb-1">
+                                            {value}
+                                        </div>
+                                    );
+                                }
+                                return null;
+                            })}
+                    </div>
+                </div>
+                {rates && rates.lastUpdated && (
+                    <div className="text-center mt-2 pt-2 border-top">
+                        <small className="text-muted">
+                            <i className="fas fa-clock me-1"></i>
+                            Updated: {rates.lastUpdated}
+                        </small>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

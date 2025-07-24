@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useJobs } from '../context/JobContext';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ApplyToJob from '../components/ApplyToJob';
 
 const JobDetail = () => {
     const { id } = useParams();
@@ -13,6 +14,7 @@ const JobDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
+    const [showApplyModal, setShowApplyModal] = useState(false);
 
     useEffect(() => {
         const fetchJob = async () => {
@@ -137,38 +139,55 @@ const JobDetail = () => {
                             <i className="fas fa-arrow-left me-2"></i>
                             Back to Jobs
                         </button>
-                        {isOwner && (
-                            <div className="d-flex gap-2">
+
+                        <div className="d-flex gap-2">
+                            {/* Apply Button - show if not owner and user is logged in */}
+                            {!isOwner && currentUser && (
                                 <button
-                                    className="btn btn-outline-warning"
-                                    onClick={() => navigate(`/edit-job/${id}`)}
-                                    disabled={deleteLoading}
+                                    className="btn btn-success"
+                                    onClick={() => setShowApplyModal(true)}
                                 >
-                                    <i className="fas fa-edit me-2"></i>
-                                    Edit Job
+                                    <i className="fas fa-paper-plane me-2"></i>
+                                    Apply for Job
                                 </button>
-                                <button
-                                    className="btn btn-outline-danger"
-                                    onClick={handleDeleteJob}
-                                    disabled={deleteLoading}
-                                >
-                                    {deleteLoading ? (
-                                        <>
-                                            <span
-                                                className="spinner-border spinner-border-sm me-2"
-                                                role="status"
-                                            ></span>
-                                            Deleting...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <i className="fas fa-trash me-2"></i>
-                                            Delete Job
-                                        </>
-                                    )}
-                                </button>
-                            </div>
-                        )}
+                            )}
+
+                            {/* Owner Actions */}
+                            {isOwner && (
+                                <>
+                                    <button
+                                        className="btn btn-outline-warning"
+                                        onClick={() =>
+                                            navigate(`/edit-job/${id}`)
+                                        }
+                                        disabled={deleteLoading}
+                                    >
+                                        <i className="fas fa-edit me-2"></i>
+                                        Edit Job
+                                    </button>
+                                    <button
+                                        className="btn btn-outline-danger"
+                                        onClick={handleDeleteJob}
+                                        disabled={deleteLoading}
+                                    >
+                                        {deleteLoading ? (
+                                            <>
+                                                <span
+                                                    className="spinner-border spinner-border-sm me-2"
+                                                    role="status"
+                                                ></span>
+                                                Deleting...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <i className="fas fa-trash me-2"></i>
+                                                Delete Job
+                                            </>
+                                        )}
+                                    </button>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -381,22 +400,50 @@ const JobDetail = () => {
                             </h3>
                         </div>
                         <div className="card-body">
-                            <p className="text-muted small mb-3">
-                                Ready to apply? Click the button below to submit
-                                your application.
-                            </p>
-                            <button className="btn btn-success w-100 mb-2">
-                                <i className="fas fa-paper-plane me-2"></i>
-                                Apply Now
-                            </button>
-                            <button className="btn btn-outline-secondary w-100">
-                                <i className="fas fa-heart me-2"></i>
-                                Save Job
-                            </button>
+                            {!isOwner && currentUser ? (
+                                <>
+                                    <p className="text-muted small mb-3">
+                                        Ready to apply? Click the button below
+                                        to submit your application.
+                                    </p>
+                                    <button
+                                        className="btn btn-success w-100 mb-2"
+                                        onClick={() => setShowApplyModal(true)}
+                                    >
+                                        <i className="fas fa-paper-plane me-2"></i>
+                                        Apply Now
+                                    </button>
+                                </>
+                            ) : !currentUser ? (
+                                <>
+                                    <p className="text-muted small mb-3">
+                                        Please log in to apply for this job.
+                                    </p>
+                                    <button
+                                        className="btn btn-primary w-100 mb-2"
+                                        onClick={() => navigate('/login')}
+                                    >
+                                        <i className="fas fa-sign-in-alt me-2"></i>
+                                        Login to Apply
+                                    </button>
+                                </>
+                            ) : (
+                                <p className="text-muted small">
+                                    This is your job posting.
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* Apply Modal */}
+            {showApplyModal && (
+                <ApplyToJob
+                    job={job}
+                    onClose={() => setShowApplyModal(false)}
+                />
+            )}
         </div>
     );
 };
